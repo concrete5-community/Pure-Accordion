@@ -44,7 +44,7 @@ class Controller extends BlockController implements FileTrackableInterface
 
     public function getBlockTypeDescription()
     {
-        return t('A simple accordion.');
+        return t('Simple accordion.');
     }
 
     public function __construct($obj=null, AggregateTracker $tracker=null)
