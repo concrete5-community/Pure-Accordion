@@ -14,7 +14,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Controller extends PackageInstaller {
 
 	protected $pkgHandle = 'pure_accordion';
-	protected $appVersionRequired = '8.0.0';
+	protected $appVersionRequired = '8.1.0';
 	protected $pkgVersion = '0.9';
 
     public function getPackageName() {
