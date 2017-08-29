@@ -13,8 +13,8 @@ $form = \Core::make('helper/form');
 <div class="pure-accordion-edit-container">
 
     <div class="form-group">
-        <?=$form->label('title',t('Title'));?>
-        <?=$form->text('title', $title);?>
+        <?php echo $form->label('title',t('Title'));?>
+        <?php echo $form->text('title', $title);?>
     </div>
 
     <div class="form-group">
