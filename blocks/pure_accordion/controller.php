@@ -39,7 +39,7 @@ class Controller extends BlockController implements FileTrackableInterface
 
     public function getBlockTypeName()
     {
-        return t('Accordion');
+        return t('Pure Accordion');
     }
 
     public function getBlockTypeDescription()

@@ -18,11 +18,11 @@ class Controller extends PackageInstaller {
 	protected $pkgVersion = '0.9';
 
     public function getPackageName() {
-		return t("Pure/Accordion");
+		return t("Pure Accordion");
 	}
 
 	public function getPackageDescription() {
-		return t("Pure/Accordion a simple accordion with a permalinks.");
+		return t("Pure Accordion a simple accordion with a permalinks.");
 	}
 
 	public function on_start() {
