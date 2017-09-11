@@ -11,6 +11,7 @@ use Concrete\Core\Block\BlockController;
 use Concrete\Core\Editor\LinkAbstractor;
 use Concrete\Core\File\Tracker\FileTrackableInterface;
 use Concrete\Core\Statistics\UsageTracker\AggregateTracker;
+use Concrete\Core\Utility\Service\Identifier;
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -44,7 +45,7 @@ class Controller extends BlockController implements FileTrackableInterface
 
     public function getBlockTypeDescription()
     {
-        return t('Simple accordion.');
+        return t('Simple accordion with permalinks');
     }
 
     public function __construct($obj=null, AggregateTracker $tracker=null)
@@ -120,10 +121,17 @@ class Controller extends BlockController implements FileTrackableInterface
         $this->set('showPermalink', 1);
     }
 
+    public function on_start()
+    {
+        parent::on_start();
+        $this->requireAsset('javascript', 'jquery');
+        $this->requireAsset('font-awesome');
+    }
+
     public function view()
     {
-        $this->requireAsset('css', 'animate');
         $this->set('content', $this->getContent());
+        $this->set('identifier', new Identifier());
     }
 
     public function save($data)
