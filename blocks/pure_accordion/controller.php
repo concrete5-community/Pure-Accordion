@@ -12,10 +12,11 @@ use Concrete\Core\Editor\LinkAbstractor;
 use Concrete\Core\File\Tracker\FileTrackableInterface;
 use Concrete\Core\Statistics\UsageTracker\AggregateTracker;
 use Concrete\Core\Utility\Service\Identifier;
+use Concrete\Core\Statistics\UsageTracker\TrackableInterface;
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class Controller extends BlockController implements FileTrackableInterface
+class Controller extends BlockController implements TrackableInterface, FileTrackableInterface
 {
 
     protected $btTable = "btPureAccordion";
