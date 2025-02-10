@@ -1,10 +1,3 @@
-/**
- * Created by Pure/Web
- * www.pure-web.ru
- * © 2017
- */
-
-
 $(document).ready(function() {
 
     function toggleAccordion(accordion) {

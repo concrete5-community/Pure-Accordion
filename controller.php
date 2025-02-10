@@ -1,38 +1,69 @@
 <?php
-/**
- * Created by Pure/Web
- * www.pure-web.ru
- * © 2017
- */
 
 namespace Concrete\Package\PureAccordion;
-use Concrete\Core\Package\Package as PackageInstaller;
-use Concrete\Core\Block\BlockType\BlockType;
 
-defined('C5_EXECUTE') or die("Access Denied.");
+use Concrete\Core\Package\Package;
 
-class Controller extends PackageInstaller {
+defined('C5_EXECUTE') or die('Access Denied.');
 
-	protected $pkgHandle = 'pure_accordion';
-	protected $appVersionRequired = '8.1.0';
-	protected $pkgVersion = '0.9.2';
+class Controller extends Package
+{
+    /**
+     * @var string
+     */
+    protected $pkgHandle = 'pure_accordion';
 
-    public function getPackageName() {
-		return t("Pure Accordion");
-	}
+    /**
+     * @var string
+     */
+    protected $pkgVersion = '0.9.2';
 
-	public function getPackageDescription() {
-		return t("Pure Accordion a simple accordion with permalinks.");
-	}
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Package\Package::$appVersionRequired
+     */
+    protected $appVersionRequired = '8.5.2';
 
-    public function install() {
-        /** @var $pkg \Concrete\Core\Entity\Package() */
-        $pkg = parent::install(); //parent is \Concrete\Core\Package\Package
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Package\Package::getPackageName()
+     */
+    public function getPackageName()
+    {
+        return t('Pure Accordion');
+    }
 
-        $blockType = BlockType::getByHandle($this->pkgHandle);
-        if (!is_object($blockType)) {
-            BlockType::installBlockType($this->pkgHandle, $pkg);
-        }
-	}
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Package\Package::getPackageDescription()
+     */
+    public function getPackageDescription()
+    {
+        return t('Pure Accordion a simple accordion with permalinks.');
+    }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Package\Package::install()
+     */
+    public function install()
+    {
+        parent::install();
+        $this->installContentFile('config/install.xml');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Package\Package::upgrade()
+     */
+    public function upgrade()
+    {
+        parent::upgrade();
+        $this->installContentFile('config/install.xml');
+    }
 }

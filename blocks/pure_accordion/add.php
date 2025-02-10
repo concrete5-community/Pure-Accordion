@@ -1,11 +1,9 @@
 <?php
+
+defined('C5_EXECUTE') or die('Access Denied.');
+
 /**
- * Created by Pure/Web
- * www.pure-web.ru
- * © 2017
+ * @var Concrete\Core\Block\View\BlockView $view
  */
 
-defined('C5_EXECUTE') or die("Access Denied.");
-$view->inc('form.php');
-
-?>
+$view->inc('edit.php');
