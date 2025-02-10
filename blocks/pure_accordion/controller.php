@@ -192,6 +192,16 @@ class Controller extends BlockController implements FileTrackableInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\File\Tracker\FileTrackableInterface::getUsedCollection()
+     */
+    public function getUsedCollection()
+    {
+        return $this->getCollectionObject();
+    }
+
     protected function prepareEdit()
     {
         $this->set('editor', $this->app->make('editor'));
