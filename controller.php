@@ -42,7 +42,7 @@ class Controller extends Package
      */
     public function getPackageDescription()
     {
-        return t('Pure Accordion a simple accordion with permalinks.');
+        return t('A simple accordion with permalinks');
     }
 
     /**
