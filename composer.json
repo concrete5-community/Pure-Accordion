@@ -1,0 +1,42 @@
+{
+    "name": "concrete5-community/pure_accordion",
+    "description": "A simple accordion with permalinks for ConcreteCMS/concrete5",
+    "type": "concrete5-package",
+    "keywords": [
+        "concretecms",
+        "concrete",
+        "cms",
+        "concrete5",
+        "package",
+        "addon",
+        "accordion",
+        "tab",
+        "tabs"
+    ],
+    "homepage": "https://github.com/concrete5-community/Pure-Accordion",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir S.",
+            "email": "guyasyou@gmail.com",
+            "role": "original author"
+        },
+        {
+            "name": "Michele Locati",
+            "email": "michele@locati.it",
+            "role": "maintainer",
+            "homepage": "https://mlocati.github.io"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/concrete5-community/zoomer/issues",
+        "source": "https://github.com/concrete5-community/Pure-Accordion"
+    },
+    "require": {
+        "concrete5/core": "^8.5.2 || ^9"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
