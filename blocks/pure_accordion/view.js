@@ -15,7 +15,7 @@ function Accordion(el)
 		my.toggle();
 		e.preventDefault();
 	});
-	if (my.permalink && my.permalink.href.endsWith(window.location.hash) && !my.el.classList.contains('open')) {
+	if (window.location.hash && my.permalink && my.permalink.href.endsWith(window.location.hash) && !my.el.classList.contains('open')) {
 		my.toggle();
 	}
 	if (window.ResizeObserver) {
