@@ -20,7 +20,7 @@ if ($openedByDefault || ($currentPage && $currentPage->isEditMode())) {
 <section class="pure-accordion-block-container <?= $contentClass ?>"<?= $showPermalink ? (' id="' . h($handle) . '"') : '' ?>>
     <div class="header">
         <h1 class="title">
-            <?= $title ?>
+            <?= h($title) ?>
         </h1>
         <span class="chevron" aria-hidden="true">&#x2B9F;</span>
     </div>
