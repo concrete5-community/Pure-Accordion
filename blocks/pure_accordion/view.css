@@ -1,23 +1,37 @@
-.pure-accordion-block-container {
+.pure-accordion-block-container
+{
     position: relative;
     margin-bottom: 10px;
     border-bottom: 1px solid #e1e1e1;
 }
-.pure-accordion-block-container .header {
+
+.pure-accordion-block-container>.permalink {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    text-align: right;
+    top: 5px;
+    left: -20px;
+    font-size: 14px;
+    opacity: 0.2;
+}
+.pure-accordion-block-container>.permalink:hover {
+    opacity: 1;
+}
+
+.pure-accordion-block-container>.header {
     padding: 6px 0px;
     cursor: pointer;
     z-index: 1;
 }
-.pure-accordion-block-container .header .title {
+.pure-accordion-block-container>.header>.title {
     font-size: 18px;
     display: inline-block;
     margin: 0;
     padding-right: 18px;
 }
-.pure-accordion-block-container .header:hover .title, .pure-accordion-block-container .header:hover .fa.fa-chevron-down {
-    color: #004c99;
-}
-.pure-accordion-block-container .header .fa.fa-chevron-down {
+.pure-accordion-block-container>.header>.chevron {
+    display: inline-block;
     position: absolute;
     right: 0;
     top: 6px;
@@ -25,33 +39,19 @@
     color: #b5b5b5;
     transition: transform 0.5s;
 }
-.pure-accordion-block-container .permalink {
-    position: absolute;
-    z-index: 2;
-    text-align: right;
-    top: 5px;
-    left: -20px;
-    font-size: 14px;
-}
-.pure-accordion-block-container .permalink a {
-    opacity: 0.2;
-}
-.pure-accordion-block-container .permalink a:hover {
-    opacity: 1;
-}
-.pure-accordion-block-container .content {
-    height: 0;
-    overflow: hidden;
-    animation-duration: 0.5s;
-    transition: height 0.5s;
-}
-.pure-accordion-block-container.open .header .title {
+.pure-accordion-block-container>.header:hover>.title, .pure-accordion-block-container>.header:hover>.chevron {
     color: #004c99;
 }
-.pure-accordion-block-container.open .content {
-    height: auto;
+.pure-accordion-block-container>.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
 }
-.pure-accordion-block-container.open .header .fa.fa-chevron-down{
+
+.pure-accordion-block-container.open>.header>.title {
+    color: #004c99;
+}
+.pure-accordion-block-container.open>.header>.chevron {
     color: #004c99;
     transform: scaleY(-1);
 }

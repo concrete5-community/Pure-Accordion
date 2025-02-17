@@ -7,8 +7,6 @@ use Concrete\Core\Editor\LinkAbstractor;
 use Concrete\Core\Error\UserMessageException;
 use Concrete\Core\File\Tracker\FileTrackableInterface;
 use Concrete\Core\Page\Page;
-use Concrete\Core\Utility\Service\Identifier;
-use Concrete\Core\Url\Resolver\Manager\ResolverManagerInterface;
 
 defined('C5_EXECUTE') or die('Access Denied.');
 
@@ -108,17 +106,6 @@ class Controller extends BlockController implements FileTrackableInterface
         return t('Simple accordion with permalinks');
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @see \Concrete\Core\Block\BlockController::registerViewAssets()
-     */
-    public function registerViewAssets($outputContent = '')
-    {
-        $this->requireAsset('javascript', 'jquery');
-        $this->requireAsset('font-awesome');
-    }
-
     public function add()
     {
         $this->set('title', '');
@@ -165,10 +152,8 @@ class Controller extends BlockController implements FileTrackableInterface
     public function view()
     {
         $this->set('content', LinkAbstractor::translateFrom($this->content));
-        $this->set('identifier', $this->app->make(Identifier::class));
         $currentPage = Page::getCurrentPage();
         $this->set('currentPage', $currentPage && !$currentPage->isError() ? $currentPage : null);
-        $this->set('currentPageUrl', $currentPage ? $this->app->make(ResolverManagerInterface::class)->resolve([$currentPage]) : '');
     }
 
     /**
