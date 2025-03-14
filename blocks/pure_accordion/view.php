@@ -9,6 +9,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
  * @var string $content
  * @var bool|int|string $openedByDefault
  * @var bool|int|string $showPermalink
+ * @var string $groupHandle
  */
 
 if ($openedByDefault || ($currentPage && $currentPage->isEditMode())) {
@@ -17,7 +18,7 @@ if ($openedByDefault || ($currentPage && $currentPage->isEditMode())) {
     $contentClass = '';
 }
 ?>
-<section class="pure-accordion-block-container <?= $contentClass ?>"<?= $showPermalink ? (' id="' . h($handle) . '"') : '' ?>>
+<section class="pure-accordion-block-container <?= $contentClass ?>"<?= $showPermalink ? (' id="' . h($handle) . '"') : '' ?><?= $groupHandle === '' ? '' : (' data-group="' . h($groupHandle) . '"')?>>
     <div class="header">
         <h1 class="title">
             <?= h($title) ?>

@@ -87,6 +87,11 @@ class Controller extends BlockController implements FileTrackableInterface
     protected $showPermalink;
 
     /**
+     * @var string|null
+     */
+    protected $groupHandle;
+
+    /**
      * {@inheritdoc}
      *
      * @see \Concrete\Core\Block\BlockController::getBlockTypeName()
@@ -113,6 +118,7 @@ class Controller extends BlockController implements FileTrackableInterface
         $this->set('content', '');
         $this->set('openedByDefault', false);
         $this->set('showPermalink', true);
+        $this->set('groupHandle', '');
         $this->prepareEdit();
     }
 
@@ -204,6 +210,7 @@ class Controller extends BlockController implements FileTrackableInterface
         $e = $this->app->make('helper/validation/error');
         $normalized['handle'] = isset($args['handle']) && is_string($args['handle']) ? trim($args['handle']) : '';
         $normalized['title'] = isset($args['title']) && is_string($args['title']) ? trim($args['title']) : '';
+        $normalized['groupHandle'] = isset($args['groupHandle']) && is_string($args['groupHandle']) ? trim($args['groupHandle']) : '';
         $len = function_exists('mb_strlen') ? mb_strlen($normalized['title']) : strlen($normalized['title']);
         if ($len === 0) {
             $e->add(t('%s is required', 'Title'));

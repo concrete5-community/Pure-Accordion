@@ -25,6 +25,9 @@
         <field name="showPermalink" type="boolean">
             <notnull />
         </field>
+        <field name="groupHandle" type="string" size="255">
+            <notnull />
+        </field>
     </table>
 
 </schema>
