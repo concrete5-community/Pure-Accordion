@@ -29,7 +29,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/concrete5-community/zoomer/issues",
+        "issues": "https://github.com/concrete5-community/Pure-Accordion/issues",
         "source": "https://github.com/concrete5-community/Pure-Accordion"
     },
     "require": {
