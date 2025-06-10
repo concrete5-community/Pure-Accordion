@@ -8,6 +8,8 @@ use Concrete\Core\Error\UserMessageException;
 use Concrete\Core\File\Tracker\FileTrackableInterface;
 use Concrete\Core\Page\Page;
 use Concrete\Core\Statistics\UsageTracker\AggregateTracker;
+use Concrete\Core\Utility\Service\Xml;
+use SimpleXMLElement;
 
 defined('C5_EXECUTE') or die('Access Denied.');
 
@@ -210,6 +212,48 @@ class Controller extends BlockController implements FileTrackableInterface
     public function getUsedCollection()
     {
         return $this->getCollectionObject();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Block\BlockController::export()
+     */
+    public function export(SimpleXMLElement $blockNode)
+    {
+        parent::export($blockNode);
+        if (version_compare(APP_VERSION, '9.4.0') < 0) {
+            $content = (string) $blockNode->data->record->content;
+            if ($content !== '') {
+                $contentFixed = LinkAbstractor::export($content);
+                if ($contentFixed !== $content) {
+                    unset($blockNode->data->record->content);
+                    $xmlService = $this->app->make(Xml::class);
+                    if (method_exists($xmlService, 'createChildElement')) {
+                        $xmlService->createChildElement($blockNode->data->record, 'content', $contentFixed);
+                    } else {
+                        $xmlService->createCDataNode($blockNode->data->record, 'content', $contentFixed);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Block\BlockController::getImportData()
+     */
+    protected function getImportData($blockNode, $page)
+    {
+        $args = parent::getImportData($blockNode, $page);
+        if (version_compare(APP_VERSION, '9.2.1') < 0) {
+            if (isset($blockNode->data->record->content)) {
+                $args['content'] = LinkAbstractor::import((string) $blockNode->data->record->content);
+            }
+        }
+
+        return $args;
     }
 
     protected function prepareEdit()
