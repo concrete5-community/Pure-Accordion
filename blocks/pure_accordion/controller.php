@@ -7,6 +7,7 @@ use Concrete\Core\Editor\LinkAbstractor;
 use Concrete\Core\Error\UserMessageException;
 use Concrete\Core\File\Tracker\FileTrackableInterface;
 use Concrete\Core\Page\Page;
+use Concrete\Core\Statistics\UsageTracker\AggregateTracker;
 
 defined('C5_EXECUTE') or die('Access Denied.');
 
@@ -60,6 +61,11 @@ class Controller extends BlockController implements FileTrackableInterface
      * @see \Concrete\Core\Block\BlockController::$supportSavingNullValues
      */
     protected $supportSavingNullValues = true;
+
+    /**
+     * @var \Concrete\Core\Statistics\UsageTracker\AggregateTracker|null
+     */
+    protected $tracker;
 
     /**
      * @var string|null
@@ -151,8 +157,24 @@ class Controller extends BlockController implements FileTrackableInterface
         if (!is_array($normalized)) {
             throw new UserMessageException(implode("\n", $normalized->getList()));
         }
+        parent::save($normalized);
+        $this->content = $normalized['content'];
+        if (version_compare(APP_VERSION, '9.0.2') < 0) {
+            $this->getTracker()->track($this);
+        }
+    }
 
-        return parent::save($normalized);
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Block\BlockController::delete()
+     */
+    public function delete()
+    {
+        if (version_compare(APP_VERSION, '9.0.2') < 0) {
+            $this->getTracker()->forget($this);
+        }
+        parent::delete();
     }
 
     public function view()
@@ -177,10 +199,7 @@ class Controller extends BlockController implements FileTrackableInterface
      */
     public function getUsedFiles()
     {
-        return array_merge(
-            $this->getUsedFilesImages(),
-            $this->getUsedFilesDownload()
-        );
+        return static::getUsedFilesIn($this->content);
     }
 
     /**
@@ -240,43 +259,47 @@ class Controller extends BlockController implements FileTrackableInterface
     }
 
     /**
-     * @return int[]|string[]
+     * @return \Concrete\Core\Statistics\UsageTracker\AggregateTracker
      */
-    protected function getUsedFilesImages()
+    protected function getTracker()
     {
-        if (!$this->content) {
-            return [];
-        }
-        $files = [];
-        $matches = [];
-        if (preg_match_all('/\<concrete-picture[^>]*?fID\s*=\s*[\'"]([^\'"]*?)[\'"]/i', (string) $this->content, $matches)) {
-            list(, $ids) = $matches;
-            foreach ($ids as $id) {
-                $files[] = $id;
-            }
+        if ($this->tracker === null) {
+            $this->tracker = $this->app->make(AggregateTracker::class);
         }
 
-        return $files;
+        return $this->tracker;
     }
 
     /**
+     * @param string|null $richText
+     *
      * @return int[]|string[]
      */
-    protected function getUsedFilesDownload()
+    protected static function getUsedFilesIn($richText)
     {
-        if (!$this->content) {
+        $richText = (string) $richText;
+        if ($richText === '') {
             return [];
         }
-        $matches = [];
-        if (!preg_match_all('(FID_DL_\d+)', $this->content, $matches)) {
-            return [];
+        $rxIdentifier = '(?<id>[1-9][0-9]{0,18})';
+        if (method_exists(\Concrete\Core\File\File::class, 'getByUUID')) {
+            $rxIdentifier = '(?:(?<uuid>[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})|' . $rxIdentifier . ')';
+        }
+        $result = [];
+        $matches = null;
+        foreach ([
+            '/\<concrete-picture[^>]*?\bfID\s*=\s*[\'"]' . $rxIdentifier . '[\'"]/i',
+            '/\bFID_DL_' . $rxIdentifier . '\b/',
+        ] as $rx) {
+            if (!preg_match_all($rx, $richText, $matches)) {
+                continue;
+            }
+            $result = array_merge($result, array_map('intval', array_filter($matches['id'])));
+            if (isset($matches['uuid'])) {
+                $result = array_merge($result, array_map('strtolower', array_filter($matches['uuid'])));
+            }
         }
 
-        return array_map(
-            static function ($match) {
-                return explode('_', $match)[2];
-            },
-            $matches[0]
-        );
+        return $result;
     }
 }
